@@ -1,0 +1,25 @@
+version: "3.8"
+
+services:
+  model:
+    build: .
+    image: repurchase-model:latest
+    container_name: repurchase-model
+    volumes:
+      - ./visuals:/app/visuals
+      - ./output:/app/output
+    environment:
+      - PYTHONUNBUFFERED=1
+    command: python model_comparison.py
+
+  jupyter:
+    build: .
+    image: repurchase-model:latest
+    container_name: repurchase-jupyter
+    ports:
+      - "8888:8888"
+    volumes:
+      - .:/app
+    environment:
+      - PYTHONUNBUFFERED=1
+    command: jupyter notebook --ip=0.0.0.0 --port=8888 --no-browser --allow-root
